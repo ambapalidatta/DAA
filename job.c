@@ -1,57 +1,83 @@
 #include<stdio.h>
-void swap(int *a,int *b){
-    int temp=*a;
-    *a=*b;
-    *b=temp;
-}
-int jobsequence(int salary[],int time[],int n){
-   int profit_arr[n];
-   for(int i=0;i<n;i++) profit_arr[i]=0;
+#include<stdbool.h>
 
-   for(int i=0;i<n;i++){
-    int pos=time[i]-1;
-    if(profit_arr[pos]==0) profit_arr[pos]=salary[i];
-    else{
-        for(int j=pos;j>=0;j--){
-            if(profit_arr[j]==0 || profit_arr[j]<salary[i]){ profit_arr[j]=salary[i];
-            break;
+void swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void print(int arr[], int n){
+    printf("The job ID's: ");
+    for(int i = 0; i < n; i++){
+        if(arr[i] != -1)
+        printf("%d ", arr[i]);
+    }
+}
+
+void calculation(int deadline[], int profit[], int id[], int n){
+    // Finding the deadline which is having maximum among others.
+    int max = 0;
+    for(int i = 0; i < n; i++){
+        if(max < deadline[i]){
+            max = deadline[i];
+        }
+    }
+
+    int arr[max + 1];
+
+    // Initializing all the values of an array to -1
+    for(int i = 0; i <= max; i++)
+    arr[i] = -1;
+
+    int jobProfit = 0, jobCount = 0;
+
+    for(int i = 0; i < n; i++){
+        for(int j = deadline[i]; j > 0; j--){
+            if(arr[j] == -1){
+                arr[j] = id[i];
+                jobProfit += profit[i];
+                jobCount++;
+                break;
             }
         }
     }
-   }
-   int totalprofit=0;
-   printf("Profit Array  \n");
-   for(int i=0;i<n;i++){
-    printf("%d ",profit_arr[i]);
-    totalprofit+=profit_arr[i];
-   }
 
-   return totalprofit;
+    printf("The profit: %d\n", jobProfit);
+    printf("Total number of jobs done: %d\n", jobCount);
+
+    print(arr + 1, max);
 }
 
 int main(){
-  int n;
-  printf("Enter the total job number : ");
-  scanf("%d",&n);
-  int salary[n];
-  int time[n];
-  printf("Enter the salaries : ");
-  for(int i=0;i<n;i++){
-    scanf("%d",&salary[i]);
-  }
-  printf("Enter the time : ");
-  for(int i=0;i<n;i++){
-    scanf("%d",&time[i]);
-  }
-  for(int i=0;i<n;i++){
-    for(int j=i+1;j<n;j++){
-        if(salary[i]<salary[j]){
-            swap(&salary[i],&salary[j]);
-            swap(&time[i],&time[j]);
+    int n;
+    printf("Enter the number of jobs: ");
+    scanf("%d", &n);
+
+    int profit[n];
+    int deadline[n];
+    int id[n];
+
+    printf("Enter the deadline and profit simultaneously for each job:\n");
+    for(int i = 0; i < n; i++){
+        id[i] = i;
+        scanf("%d", &deadline[i]);
+        scanf("%d", &profit[i]);
+    }
+
+    // Sort deadlines and profit
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            if(profit[i] < profit[j]){
+                swap(&deadline[i], &deadline[j]);
+                swap(&profit[i], &profit[j]);
+                swap(&id[i], &id[j]);
+            }
         }
     }
-  }
-  int profit=jobsequence(salary,time,n);
-  printf("\nThe total Profit is : %d",profit);
-return 0;
+
+    calculation(deadline, profit, id, n);
+
+
+    return 0;
 }
