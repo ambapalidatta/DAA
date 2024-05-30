@@ -12,7 +12,7 @@ void print(int dist[]){
 
 
 void calculation(int graph[][N]){
-    int dist[N] = {INF, INF, INF, INF, INF, INF};
+    int dist[N] = {9999, 9999, 99999, 9999, 9999, 9999};
 
     dist[0] = 0;
 
@@ -42,12 +42,12 @@ void calculation(int graph[][N]){
 
 int main(){
 
-    int graph[N][N] = {{0, 5, INF, INF, INF, INF},
-                    {INF, 0, -2, INF, INF, -3},
-                    {INF, INF, 0, INF, 3, INF},
-                    {INF, INF, 6, 0, -2, INF},
-                    {INF, INF, INF, INF, 0, INF},
-                    {INF, INF, INF, 1, INF, 0}};
+    int graph[N][N] = {{0, 5, 9999, 9999, 9999, 9999},
+                    {9999, 0, -2, 9999, 9999, -3},
+                    {9999, 9999, 0, 9999, 3, 9999},
+                    {9999, 9999, 6, 0, -2, 9999},
+                    {9999, 9999, 9999, 9999, 0, 9999},
+                    {9999, 9999, 9999, 1, 9999, 0}};
     
     calculation(graph);
 }
